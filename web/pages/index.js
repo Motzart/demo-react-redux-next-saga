@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import actionTypes from '../constants/actionTypes';
+import {
+  fetchItemsRequest,
+} from '../reducers/items';
 
 class Home extends Component {
   static getInitialProps({ store }) {
     try {
-      store.dispatch({ type: actionTypes.LOAD_ITEMS_LOADING });
+      store.dispatch(fetchItemsRequest());
       return {};
     } catch (e) {
       return { code: e };
@@ -13,8 +15,8 @@ class Home extends Component {
   }
 
   render() {
-    const { loading } = this.props;
-    if (loading) {
+    const { isLoading } = this.props;
+    if (isLoading) {
       return <div>Loading...</div>;
     }
     return (
@@ -25,7 +27,7 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
   data: state.items.data,
-  loading: state.items.loading,
+  isLoading: state.items.isLoading,
   error: state.items.error,
 });
 

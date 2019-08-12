@@ -12,6 +12,6 @@ export function initializeStore(initialState = {}) {
     initialState,
     composeWithDevTools(applyMiddleware(sagaMiddleware)),
   );
-  store.sagaTask = sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(rootSaga);
   return store;
 }

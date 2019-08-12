@@ -1,30 +1,30 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
-import actionTypes from '../constants/actionTypes';
-import Api from '../api/api';
+import { put, take, all, call } from 'redux-saga/effects';
+import axios from 'axios';
 
-async function fetchAsync(func) {
-  const response = await func();
-  if (response.ok) {
-    return await response.json();
-  }
-  throw new Error('Unexpected error!!!');
-}
+import {
+  fetchItemsRequest,
+  fetchItemsSuccess,
+  fetchItemsFail,
+} from '../reducers/items';
 
-function* fetchItems() {
+function* fetchItems(per_page) {
+  const url = `http://localhost:8081/api/v1/items?per-page=${per_page}`;
   try {
-    const items = yield fetchAsync(Api.getItems);
-    yield put({ type: actionTypes.LOAD_ITEMS_SUCCESS, data: items });
+    const { data: items } = yield call([axios, 'get'], url);
+    yield put(fetchItemsSuccess(items));
   } catch (e) {
-    yield put({ type: actionTypes.LOAD_ITEMS_FAILURE, error: e.message });
+    yield put(fetchItemsFail(e.message));
   }
 }
 
-function* itemsSaga() {
-  yield takeLatest(actionTypes.LOAD_ITEMS_LOADING, fetchItems);
+function* watchItemsSaga() {
+  yield take(fetchItemsRequest);
+  const per_page = 20;
+  yield call(fetchItems, per_page);
 }
 
 export default function* rootSaga() {
   yield all([
-    itemsSaga(),
+    watchItemsSaga(),
   ]);
 }
