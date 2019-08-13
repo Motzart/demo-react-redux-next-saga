@@ -14,6 +14,7 @@ app.use("*", cors());
 app.use("/api/v1/items", (req, res) => {
   const queryString = url.parse(req.url);
   const requestUrl = `${config.API_URL}?${queryString.query}`;
+  console.log('called', requestUrl);
   fetch(requestUrl)
     .then(res => res.json())
     .then(json => res.send(json))

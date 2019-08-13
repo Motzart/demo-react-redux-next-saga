@@ -2,7 +2,8 @@ import App from 'next/app';
 import React, { createContext } from 'react';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
-import { initializeStore } from '../store';
+import withReduxSaga from 'next-redux-saga';
+import configureStore  from '../store';
 
 export const AppContext = createContext({});
 
@@ -29,4 +30,4 @@ class TestApp extends App {
   }
 }
 
-export default withRedux(initializeStore)(TestApp);
+export default withRedux(configureStore)(withReduxSaga(TestApp))

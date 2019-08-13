@@ -12,5 +12,11 @@ module.exports = {
     },
     sourceType: 'module',
   },
-  plugins: ['jsx-a11y', 'react']
+  plugins: ['jsx-a11y', 'react'],
+  rules: {
+    'react/prop-types': 'off',
+    'react/jsx-filename-extension': 'off',
+    'react/destructuring-assignment': 'off',
+    'no-underscore-dangle': 'off'
+  }
 };
